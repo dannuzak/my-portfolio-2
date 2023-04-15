@@ -1,4 +1,4 @@
-import { createClient } from "next-sanity";
+import { createClient, groq } from "next-sanity";
 
 export async function getProjects() {
   const client = createClient({
@@ -7,4 +7,18 @@ export async function getProjects() {
     apiVersion: "2023-04-11", 
   });
   
+
+
+return client.fetch(
+  groq`*[_type == "project"]{
+    _id,
+    _createdAt,
+    name,
+    "slug": slug.current,
+    "image": image.asset->url,
+    url,
+    content
+  }`
+)  
+
 }
